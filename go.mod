@@ -1,3 +1,3 @@
-module goDemoProject
+module prlife
 
 go 1.13
