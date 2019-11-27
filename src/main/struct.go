@@ -6,7 +6,7 @@ import (
 )
 
 //定义结构体
-type Person struct {
+type Struct_Person struct {
 	Name    string
 	Sex     string
 	Age     int
@@ -14,7 +14,7 @@ type Person struct {
 }
 
 //修改结构体变量的某个属性值，将整个person变量传值进去，然后进行修改
-func updateAddress(person Person) Person {
+func updateAddress(person Struct_Person) Struct_Person {
 	person.Address = "天空一号"
 	person.Name = "jimmy"
 	//此处程序又开僻了一个新空间，修改的值也是新空间的值，原空间的值不变
@@ -24,7 +24,7 @@ func updateAddress(person Person) Person {
 }
 
 //传递的是一个指针地址,返回修改过后的person
-func updateAddressByPoint(person *Person) *Person {
+func updateAddressByPoint(person *Struct_Person) *Struct_Person {
 	person.Address = "载人航天研究基地"
 	person.Name = "john"
 	//依然是指向同一个地址
@@ -34,7 +34,7 @@ func updateAddressByPoint(person *Person) *Person {
 }
 
 func main() {
-	var person = Person{
+	var person = Struct_Person{
 		Name:    "caspar zheng",
 		Sex:     "M",
 		Age:     30,
@@ -45,7 +45,7 @@ func main() {
 	//var newPerson=updateAddress(person)
 	//fmt.Printf("原来person %v,  地址为:%p \n",person,&person)
 	//fmt.Printf("修改后的person %v  地址为:%p \n\n",newPerson,&newPerson)
-	var newPerson *Person = updateAddressByPoint(&person) // 此处之所以地址不同，是因为重新定义了一个指针变量，所以此处地址不同
+	var newPerson *Struct_Person = updateAddressByPoint(&person) // 此处之所以地址不同，是因为重新定义了一个指针变量，所以此处地址不同
 	fmt.Printf("原来person %v,  地址为:%p \n", person, &person)
 	fmt.Printf("修改后的person %v  地址为:%p \n", newPerson, &newPerson)
 

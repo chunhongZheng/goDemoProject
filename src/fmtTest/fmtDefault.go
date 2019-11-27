@@ -69,7 +69,7 @@ func PrintIntegerFmt() {
 	//%c  相应Unicode码点所表示的字符
 	fmt.Printf("%c\n", 33)
 	fmt.Printf("%c \n", 0x4E2D) //中  中的Unicode码为0x4E2D
-	var unicode = "\u4e2d\u56fd\u68a6"
+	var unicode = "\U00000e00"
 	fmt.Printf("%c\n", unicode)
 	//fmt.Printf("%d相对应的Unicode码相对应的字符为为:%c \n",y,y)
 	//%x 提供十六进制编码
