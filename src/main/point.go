@@ -27,7 +27,6 @@ func main() {
 	//*b 表示取变量中所对应的值所对应地址存储的值。
 	var b *int = &a
 	fmt.Printf("b的值为: %p, *b所存储的值为 %d\n", b, *b)
-
 	//值传递和地址传递
 	change1(a)
 	fmt.Printf("a 的值为 %d, a 的地址为: %p \n", a, &a)
