@@ -36,7 +36,6 @@ func main() {
 	result := Base58Encode(source)
 	//fmt.Println(result)
 	fmt.Printf("加密后的加密字符串为: %s\n", string(result))
-
 	desc := Base58Decode(result)
 	fmt.Printf("解密后的原字符串为: %s\n", string(desc))
 
