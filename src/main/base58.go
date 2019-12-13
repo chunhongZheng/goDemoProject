@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"math/big"
 )
@@ -20,31 +21,48 @@ func main() {
 
 	//	var inputBtyes []byte=[0x00, 0xFF]
 	//	inputBtyes=Base58Encode(inputBtyes)
-	inputBtyes := []byte{0x01, 0xFF}
-	result := Base58Encode(inputBtyes)
-	//	println(result)
-	println(1, 3, 4, 5)
-	fmt.Printf("结果为: %s\n", result)
+	//	inputBtyes := []byte{0x01, 0xFF}
+	//	result := Base58Encode(inputBtyes)
+	//  反转测试
+	//    source:=[]byte("qwerty")
+	//	fmt.Println(string(source))
+	//    reverseByte(source)
+	//    fmt.Println(string(source))
+	//result := Base58Encode(source)
+	//fmt.Printf("结果为: %s\n", result)
+
+	source := []byte("hello caspar")
+	fmt.Printf("加密前的原字符串为: %s\n", string(source))
+	result := Base58Encode(source)
+	//fmt.Println(result)
+	fmt.Printf("加密后的加密字符串为: %s\n", string(result))
+
+	desc := Base58Decode(result)
+	fmt.Printf("解密后的原字符串为: %s\n", string(desc))
+
 }
 
 var b58Alphabet = []byte("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 
+//加密
 func Base58Encode(input []byte) []byte {
 	var result []byte                           //声明一个slice类型变量  切片
 	x := big.NewInt(0).SetBytes(input)          //大数据类型
 	base := big.NewInt(int64(len(b58Alphabet))) //相当于多少进制数
 	zero := big.NewInt(0)
-	mod := &big.Int{}
+	mod := &big.Int{} //大整数的指针
 	for x.Cmp(zero) != 0 {
 		//x是商,mod是余数    10/2=5 ....0     5/2=2 ....1    2/2=1....0    1/2=0....1          1010
 		x.DivMod(x, base, mod) //对x取余数
 		result = append(result, b58Alphabet[mod.Int64()])
-		println(result)
+		//println(result)
 	}
 	//反转结果
 	reverseByte(result)
+	//把这个字节前置的0 字节置换成第一个字符
 	for _, b := range input {
 		if b == 0x00 {
+
 			result = append([]byte{b58Alphabet[0]}, result...)
 
 		} else {
@@ -52,6 +70,27 @@ func Base58Encode(input []byte) []byte {
 		}
 	}
 	return result
+}
+
+//解密
+func Base58Decode(input []byte) []byte {
+	result := big.NewInt(0)
+	zeroBytes := 0 //统计前面为0的个数，方便截取解码
+	for _, b := range input {
+		if b != b58Alphabet[0] {
+			break
+		}
+		zeroBytes++
+	}
+	payload := input[zeroBytes:]
+	for _, b := range payload {
+		charIndex := bytes.IndexByte(b58Alphabet, b) //找出b所在的索引位置，即是余数
+		result.Mul(result, big.NewInt(int64(len(b58Alphabet))))
+		result.Add(result, big.NewInt(int64(charIndex)))
+	}
+	decoded := result.Bytes()
+	decoded = append(bytes.Repeat([]byte{byte(0x00)}, zeroBytes), decoded...)
+	return decoded
 }
 
 //  abcdef
