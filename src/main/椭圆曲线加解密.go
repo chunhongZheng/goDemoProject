@@ -5,6 +5,7 @@ import (
 	"crypto/elliptic"
 	"errors"
 	"fmt"
+	"prlife/src/tool"
 	"strings"
 )
 
@@ -52,20 +53,29 @@ func getEcdsaKey(randKey string) (*ecdsa.PrivateKey, ecdsa.PublicKey, error) {
 	if err != nil {
 		return prk, puk, err
 	}
-	puk = prk.PublicKey
+	puk = prk.PublicKey //ECDSA 公钥
 	return prk, puk, err
 }
+
+/**
+  对text加密，text必须是一个hash值，例如md5、sha1等
+  使用私钥prk
+  使用随机熵增强加密安全，安全依赖于此熵，randsign
+  返回加密结果，结果为数字证书r、s的序列化后拼接，然后用hex转换为string
+*/
 
 func main() {
 	//随机熵，用于加密安全
 	//randSign := "20180619zafes20180619zafes20180619zafessss"//至少36位
 	//随机key，用于创建公钥和私钥
-
-	randKey := "fb0f7279c18d4394594fc9714797c9680335a320"
+	randKey := tool.GetRandomString(40)
+	//randKey := "fb0f7279c18d4394594fc9714797c9680335a320"
 	//创建公钥和私钥
 	prk, puk, err := getEcdsaKey(randKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("私钥为：%d,公钥为：%d", prk, puk)
+	publicKey := append(puk.X.Bytes(), puk.Y.Bytes()...)
+	fmt.Printf("私钥为：%x 长度为:%d\n公钥为：%x,公钥长度为%d\n", prk.D.Bytes(), len(prk.D.Bytes()), publicKey, len(publicKey))
+
 }
