@@ -155,9 +155,9 @@ func verify(text []byte, signature string, key ecdsa.PublicKey) (bool, error) {
 */
 func hashtext(text, salt string) []byte {
 
-	Md5Inst := md5.New()
+	Md5Inst := md5.New() //New 返回一个新的散列.Hash 计算 MD5 校验和。
 	Md5Inst.Write([]byte(text))
-	result := Md5Inst.Sum([]byte(salt))
+	result := Md5Inst.Sum([]byte(salt)) //返回数据的 MD5 校验和
 
 	return result
 }
@@ -190,5 +190,9 @@ func main() {
 	}
 	//签名输出
 	fmt.Println(result)
+
+	//签名与hash值进行校验
+	tmp, err := verify(htext, result, puk)
+	fmt.Println(tmp)
 
 }

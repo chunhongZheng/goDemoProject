@@ -11,11 +11,11 @@ func main() {
 
 	Md5Inst := md5.New()
 	Md5Inst.Write([]byte(TestString))
-	Result := Md5Inst.Sum([]byte(""))
+	Result := Md5Inst.Sum([]byte("123"))
 	fmt.Printf("%x\n\n", Result)
 
 	Sha1Inst := sha1.New()
 	Sha1Inst.Write([]byte(TestString))
-	Result = Sha1Inst.Sum([]byte(""))
+	Result = Sha1Inst.Sum([]byte("123"))
 	fmt.Printf("%x\n\n", Result)
 }
